@@ -1,0 +1,8 @@
+C:\Files\Visual Studio 2013\Projects\picturebox\picturebox\bin\Debug\picturebox.exe.config
+C:\Files\Visual Studio 2013\Projects\picturebox\picturebox\bin\Debug\picturebox.exe
+C:\Files\Visual Studio 2013\Projects\picturebox\picturebox\bin\Debug\picturebox.pdb
+C:\Files\Visual Studio 2013\Projects\picturebox\picturebox\obj\Debug\picturebox.Form1.resources
+C:\Files\Visual Studio 2013\Projects\picturebox\picturebox\obj\Debug\picturebox.Properties.Resources.resources
+C:\Files\Visual Studio 2013\Projects\picturebox\picturebox\obj\Debug\picturebox.csproj.GenerateResource.Cache
+C:\Files\Visual Studio 2013\Projects\picturebox\picturebox\obj\Debug\picturebox.exe
+C:\Files\Visual Studio 2013\Projects\picturebox\picturebox\obj\Debug\picturebox.pdb
