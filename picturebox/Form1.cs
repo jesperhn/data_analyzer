@@ -475,7 +475,7 @@ namespace picturebox
             {
                 if (mouseEventArgs.X < (xyValues[k].Y / Globals.VALUE) && mouseEventArgs.X > (xyValues[k].X / Globals.VALUE) && mouseEventArgs.Y > 20 && mouseEventArgs.Y < 100)
                 {
-                    tbArea.Text = (((float)(xyValues[k].Y - xyValues[k].X) / (totalProcessTime / 100)).ToString("n2") + "%");
+					tbArea.Text = (((float)(xyValues[k].Y - xyValues[k].X) / (float)(totalProcessTime / 100)).ToString("n2") + "%");
 
                     int time = (int)(xyValues[k].Y - xyValues[k].X);
 
@@ -543,7 +543,7 @@ namespace picturebox
                 }
                 if (mouseEventArgs.X < (xyValues[k].Y / Globals.VALUE) && mouseEventArgs.X > (xyValues[k].X / Globals.VALUE) && mouseEventArgs.Y > 130 && mouseEventArgs.Y < 210)
                 {
-                    tbArea.Text = ((totalProcessTime / (totalProcessTime / 100)).ToString() + "%");
+					tbArea.Text = (((decimal)(totalProcessTime / (totalProcessTime / 100))).ToString("n2") + "%");
                     tbTime.Text = tbSeconds.Text;
                 }
             }
@@ -740,10 +740,12 @@ namespace picturebox
             xlWorkBook = xlApp.Workbooks.Add(misValue);
             xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
 
-			string totalAM = "";
+			string name = null;
+			string nummer = null;
+			string sektion = null;
 			string test = Globals.readText;
 			int l = 3; //index counter for action writeout to excel
-			int m = 1; //index counter for start/stop writeout to excel
+			int m = 2; //index counter for start/stop writeout to excel
 			//split all text into sub-strings. Keyword is "\r" which indicates that a substring is made everytime a carriage return occurs. 
 			string[] words = Regex.Split(Globals.readText, "\r");
 			//iterate through each new sub-string in the array
@@ -753,42 +755,57 @@ namespace picturebox
 					string[] timer = Regex.Split (auto, " ");
 					foreach (string newline in timer) {
 						if (Regex.IsMatch (newline, "^\\d{4}-\\d{2}-\\d{2}$")) {
-							xlWorkSheet.Cells [m+1, 1] = "Start time:";
+							//xlWorkSheet.Cells [m + 1, 1] = "Start time:";
 							string onelinestring = newline.Replace ("\n", "");
-							xlWorkSheet.Cells [m+1, 3] = onelinestring;
+							xlWorkSheet.Cells [m + 1, 4] = onelinestring;
 						}
-						if (Regex.IsMatch (newline, "^\\d{2}:\\d{2}:\\d{2}$")) {
-							xlWorkSheet.Cells [m+1, 1] = "Start time:";
-							string onelinestring = newline.Replace ("\n", "");
-							xlWorkSheet.Cells [m+1, 2] = onelinestring;
-						}
+//						if (Regex.IsMatch (newline, "^\\d{2}:\\d{2}:\\d{2}$")) {
+//							//xlWorkSheet.Cells [m + 1, 1] = "Start time:";
+//							string onelinestring = newline.Replace ("\n", "");
+//							xlWorkSheet.Cells [m + 1, 3] = onelinestring;
+//						}
 					} 
 					//m = l;
 				}
+//				else {
+//					xlWorkSheet.Cells [m + 1, 8] = "Section in progress";
+//				} 
 				//stop time writeout to excel
 				if (auto.Contains("Stop time:")) {
 					string[] timer = Regex.Split (auto, " ");
 					foreach (string newline in timer) {
 						if (Regex.IsMatch (newline, "^\\d{4}-\\d{2}-\\d{2}")) {
-							xlWorkSheet.Cells [m + 2, 1] = "Stop time:";
+							//xlWorkSheet.Cells [m + 2, 1] = "Stop time:";
 							string onelinestring = newline.Replace ("\n", "");
-							xlWorkSheet.Cells [m + 2, 3] = onelinestring;
+							xlWorkSheet.Cells [m + 2, 4] = onelinestring;
 						}
-						if (Regex.IsMatch (newline, "^\\d{2}:\\d{2}:\\d{2}$")) {
-							xlWorkSheet.Cells [m+2, 1] = "Stop time:";
-							string onelinestring = newline.Replace ("\n", "");
-							xlWorkSheet.Cells [m+2, 2] = onelinestring;
-						}
+//						if (Regex.IsMatch (newline, "^\\d{2}:\\d{2}:\\d{2}$")) {
+//							//xlWorkSheet.Cells [m+2, 1] = "Stop time:";
+//							string onelinestring = newline.Replace ("\n", "");
+//							xlWorkSheet.Cells [m+2, 3] = onelinestring;
+//						}
 					}
-
 				}
+				string[] names = { "CB4-7,3/16,5-600", "CB4-7,3/16,5-800" };
+				//sektionsname writeout to excel
+				if (auto.Contains("MaskinNavn")) {
+						string[] timer = Regex.Split (auto, " ");
+						foreach (string newline in timer) {
+							//xlWorkSheet.Cells [m, 1] = "Sektion:";
+							string onelinestring = newline.Replace ("\n", "");
+							name = onelinestring;
+							xlWorkSheet.Cells [m, 2] = name;
+							
+						}
+					} 
 				//sektionstype writeout to excel
 				if (auto.Contains ("Sektionstype")) {
 					string[] timer = Regex.Split (auto, " ");
 					foreach (string newline in timer) {
 						//xlWorkSheet.Cells [m, 1] = "Sektion:";
 						string onelinestring = newline.Replace ("\n", "");
-						xlWorkSheet.Cells [m, 3] = onelinestring;
+						sektion = onelinestring;
+						//xlWorkSheet.Cells [m, 3] = onelinestring;
 
 					}
 				} 
@@ -797,10 +814,16 @@ namespace picturebox
 				if (auto.Contains ("Sektionsnummer")) {
 					string[] timer = Regex.Split (auto, " ");
 					foreach (string newline in timer) {
-						xlWorkSheet.Cells [m, 1] = "Sektion:";
+						//xlWorkSheet.Cells [m, 1] = "Sektion:";
 						string onelinestring = newline.Replace ("\n", "");
-						xlWorkSheet.Cells [m, 2] = onelinestring;
+						nummer = onelinestring;
+						//xlWorkSheet.Cells [m, 2] = onelinestring;
+						xlWorkSheet.Cells [m+1, 2] = nummer + ", " + sektion;
+
 					}
+					name = null;
+					nummer = null;
+					sektion = null;
 					m = l;
 					l = l + 2;
 				} 
@@ -843,8 +866,12 @@ namespace picturebox
 			}
 
 				xlApp.Visible = true;
-				//add data 
-				xlWorkSheet.Cells [1, 5] = "Time";
+				//add static data
+				xlWorkSheet.Cells [1, 1] = "Varenummer";
+				xlWorkSheet.Cells [1, 2] = "Sektionsbetegnelse";
+				xlWorkSheet.Cells [1, 3] = "PO nummer";
+				xlWorkSheet.Cells [1, 4] = "Dato";
+				xlWorkSheet.Cells [1, 5] = "Tid";
 				xlWorkSheet.Cells [1, 6] = "Action";
 
             //xlWorkBook.Close(false, misValue, misValue);
